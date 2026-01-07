@@ -313,6 +313,8 @@
       background: white;
       padding: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 100% !important;
+      height: 300px !important;
     }
 
     footer {
@@ -660,13 +662,21 @@ function calculateTotal() {
   });
 
   document.getElementById("chartContainer").classList.add("show");
-  
-  // Smooth scroll to chart
-  setTimeout(() => {
-    document.getElementById("chartContainer").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 400);
+
+setTimeout(() => {
+  if (chart) {
+    chart.resize();
+  }
+
+  document.getElementById("chartContainer").scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest'
+  });
+}, 400);
+
 }
 </script>
 
 </body>
+
 </html>
