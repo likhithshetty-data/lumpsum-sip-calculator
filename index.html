@@ -3,112 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <title>Lumpsum + SIP Calculator | Calculate Returns When You Invest Both</title>
-  <meta name="description" content="Calculate investment returns when you invest a lumpsum first and then continue monthly SIP. Free combined SIP + Lumpsum calculator.">
+  <meta name="description" content="Calculate your investment returns with our SIP and Lumpsum calculator. Understand compound interest, wealth creation, and plan your financial future with Finance in Tulu (FIT).">
+  <meta name="keywords" content="SIP calculator, lumpsum calculator, investment calculator, mutual fund calculator, compound interest, wealth creation, financial planning, FIT, Finance in Tulu">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Chart.js -->
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+      min-height: 100vh;
       padding: 20px;
       color: #333;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-image: 
+        linear-gradient(30deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03)),
+        linear-gradient(150deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03)),
+        linear-gradient(30deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03)),
+        linear-gradient(150deg, rgba(255,255,255,0.03) 12%, transparent 12.5%, transparent 87%, rgba(255,255,255,0.03) 87.5%, rgba(255,255,255,0.03));
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px;
+      z-index: 0;
+      opacity: 0.5;
     }
 
     .container {
-      max-width: 1100px;
-      margin: auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 16px;
+      max-width: 1200px;
+      background: rgba(255, 255, 255, 0.98);
+      margin: 0 auto 40px;
+      padding: 40px;
+      border-radius: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
       text-align: center;
       color: #1e3c72;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      font-size: 32px;
+      font-weight: 700;
     }
 
     .intro-text {
       text-align: center;
-      margin-bottom: 30px;
       color: #555;
-      line-height: 1.6;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 40px;
     }
 
     .main-layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 30px;
+      gap: 40px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 968px) {
       .main-layout {
         grid-template-columns: 1fr;
       }
     }
 
     label {
-      font-weight: bold;
+      font-weight: 600;
       display: block;
-      margin-top: 15px;
+      margin-bottom: 8px;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin-top: 6px;
+      padding: 14px;
       font-size: 16px;
+      margin-bottom: 20px;
     }
 
     button {
-      margin-top: 25px;
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       background: #1e3c72;
       color: #fff;
       border: none;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
-      border-radius: 8px;
     }
 
-    .result {
+    .result, .breakup {
       margin-top: 20px;
       padding: 15px;
-      background: #e3f2fd;
-      border-radius: 10px;
-      font-size: 18px;
-      text-align: center;
+      background: #f1f5f9;
       display: none;
     }
-
-    .result.show { display: block; }
 
     .chart-container {
       margin-top: 40px;
     }
 
-    .chart-wrapper {
-      position: relative;
+    canvas {
       width: 100%;
-      height: 380px;
-    }
-
-    @media (max-width: 600px) {
-      .chart-wrapper {
-        height: 300px;
-      }
-    }
-
-    footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #eee;
     }
   </style>
 </head>
@@ -119,132 +130,79 @@
   <h1>Lumpsum + SIP Calculator</h1>
 
   <p class="intro-text">
-    Calculate returns when you invest a one-time lumpsum and continue monthly SIP investments.
-    See how your combined portfolio grows year by year.
+    This Lumpsum + SIP calculator helps you calculate investment returns when you invest
+    a one-time lumpsum amount first and then continue monthly SIP investments.
   </p>
 
   <div class="main-layout">
     <div>
       <label>Lumpsum Amount (₹)</label>
-      <input id="lumpAmount" type="number" placeholder="100000">
+      <input id="lumpAmount" type="number">
 
       <label>Monthly SIP (₹)</label>
-      <input id="sipAmount" type="number" placeholder="5000">
+      <input id="sipAmount" type="number">
 
       <label>Expected Annual Return (%)</label>
-      <input id="rate" type="number" placeholder="12">
+      <input id="rate" type="number">
 
       <label>Investment Duration (Years)</label>
-      <input id="years" type="number" placeholder="15">
+      <input id="years" type="number">
 
-      <button onclick="calculate()">Calculate</button>
+      <button onclick="calculateTotal()">Calculate</button>
 
-      <div id="result" class="result"></div>
+      <div class="result" id="totalResult"></div>
+      <div class="breakup" id="breakupResult"></div>
     </div>
 
-    <div>
-      <h2>📈 Growth Chart</h2>
-      <div class="chart-wrapper">
-        <canvas id="chart"></canvas>
-      </div>
+    <div class="chart-container">
+      <canvas id="growthChart"></canvas>
     </div>
   </div>
 </div>
 
-<footer>
-  © Finance in Tulu (FIT)
-</footer>
-
 <script>
 let chart;
 
-function calculate() {
-  const lump = +lumpAmount.value;
-  const sip = +sipAmount.value;
-  const rate = +rateInput.value / 100;
-  const years = +yearsInput.value;
+function calculateTotal() {
+  let lump = Number(document.getElementById("lumpAmount").value);
+  let sip = Number(document.getElementById("sipAmount").value);
+  let rate = Number(document.getElementById("rate").value) / 100;
+  let years = Number(document.getElementById("years").value);
 
-  if (!lump || !sip || !rate || !years) {
-    alert("Enter all values");
-    return;
-  }
-}
+  let monthlyRate = rate / 12;
 
-const lumpAmount = document.getElementById("lumpAmount");
-const sipAmount = document.getElementById("sipAmount");
-const rateInput = document.getElementById("rate");
-const yearsInput = document.getElementById("years");
-const resultBox = document.getElementById("result");
-
-function calculate() {
-  const lump = +lumpAmount.value;
-  const sip = +sipAmount.value;
-  const rate = +rateInput.value / 100;
-  const years = +yearsInput.value;
-
-  if (lump <= 0 || sip <= 0 || rate <= 0 || years <= 0) {
-    alert("Enter valid values");
-    return;
-  }
-
-  const monthlyRate = rate / 12;
-  const months = years * 12;
-
-  const lumpFV = lump * Math.pow(1 + rate, years);
-  const sipFV = sip * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
-  const totalFV = lumpFV + sipFV;
-
-  resultBox.innerHTML =
-    `Total Value: ₹${totalFV.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
-  resultBox.classList.add("show");
-
-  const labels = [];
-  const lumpData = [];
-  const sipData = [];
-  const totalData = [];
+  let labels = [];
+  let lumpData = [];
+  let sipData = [];
+  let totalData = [];
 
   let sipCorpus = 0;
 
-  for (let y = 1; y <= years; y++) {
-    labels.push("Year " + y);
+  for (let year = 1; year <= years; year++) {
+    labels.push("Year " + year);
 
-    const lumpVal = lump * Math.pow(1 + rate, y);
-    lumpData.push(lumpVal);
+    let lumpValue = lump * Math.pow(1 + rate, year);
+    lumpData.push(lumpValue);
 
-    for (let m = 0; m < 12; m++) {
+    for (let m = 1; m <= 12; m++) {
       sipCorpus = (sipCorpus + sip) * (1 + monthlyRate);
     }
 
     sipData.push(sipCorpus);
-    totalData.push(lumpVal + sipCorpus);
+    totalData.push(lumpValue + sipCorpus);
   }
 
   if (chart) chart.destroy();
 
-  chart = new Chart(document.getElementById("chart"), {
+  chart = new Chart(document.getElementById("growthChart"), {
     type: "line",
     data: {
       labels,
       datasets: [
         { label: "Lumpsum", data: lumpData, borderColor: "#1e3c72", fill: false },
         { label: "SIP", data: sipData, borderColor: "#2a5298", fill: false },
-        { label: "Total", data: totalData, borderColor: "#4CAF50", borderWidth: 3, fill: false }
+        { label: "Total", data: totalData, borderColor: "#4CAF50", fill: false }
       ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      plugins: {
-        legend: { position: "bottom" },
-        tooltip: {
-          callbacks: {
-            label: ctx =>
-              `${ctx.dataset.label}: ₹${ctx.parsed.y.toLocaleString("en-IN")}`
-          }
-        }
-      },
-      scales: { y: { beginAtZero: true } }
     }
   });
 }
