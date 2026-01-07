@@ -514,27 +514,31 @@ function calculateTotal() {
   let monthlyRate = rate / 12;
   let totalMonths = years * 12;
 
-  /* -------- FINAL VALUES -------- */
+  // Final values
   let lumpFV = lump * Math.pow(1 + rate, years);
-
   let sipFV = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
-
   let totalFV = lumpFV + sipFV;
-  let totalInvested = lump + (sip * totalMonths);
+  let totalInvested = lump + sip * totalMonths;
   let totalGains = totalFV - totalInvested;
 
   document.getElementById("totalResult").innerHTML =
-    "💰 Total Future Value: ₹" + totalFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) +
-    "<br><small style='font-size:16px; font-weight:normal;'>Total Invested: ₹" + totalInvested.toLocaleString('en-IN') + 
-    " | Wealth Gained: ₹" + totalGains.toLocaleString('en-IN', {maximumFractionDigits: 0}) + "</small>";
+    "💰 Total Future Value: ₹" + totalFV.toLocaleString('en-IN', { maximumFractionDigits: 0 }) +
+    "<br><small style='font-size:16px;font-weight:normal;'>Total Invested: ₹" +
+    totalInvested.toLocaleString('en-IN') +
+    " | Wealth Gained: ₹" +
+    totalGains.toLocaleString('en-IN', { maximumFractionDigits: 0 }) +
+    "</small>";
   document.getElementById("totalResult").classList.add("show");
 
   document.getElementById("breakupResult").innerHTML =
-    '<div class="breakup-item">🏦 Lumpsum Growth: ₹' + lumpFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) + 
-    '</div><div class="breakup-item">📈 SIP Growth: ₹' + sipFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) + '</div>';
+    '<div class="breakup-item">🏦 Lumpsum Growth: ₹' +
+    lumpFV.toLocaleString('en-IN', { maximumFractionDigits: 0 }) +
+    '</div><div class="breakup-item">📈 SIP Growth: ₹' +
+    sipFV.toLocaleString('en-IN', { maximumFractionDigits: 0 }) +
+    '</div>';
   document.getElementById("breakupResult").classList.add("show");
 
-  /* -------- CORRECT & EFFICIENT CHART DATA -------- */
+  // Chart data
   let labels = [];
   let lumpData = [];
   let sipData = [];
@@ -545,137 +549,72 @@ function calculateTotal() {
   for (let year = 1; year <= years; year++) {
     labels.push("Year " + year);
 
-    // Lumpsum value
     let lumpValue = lump * Math.pow(1 + rate, year);
     lumpData.push(lumpValue);
 
-    // SIP accumulation (year-wise, realistic)
     for (let m = 1; m <= 12; m++) {
       sipCorpus = (sipCorpus + sip) * (1 + monthlyRate);
     }
 
     sipData.push(sipCorpus);
-
-    // Total value
     totalData.push(lumpValue + sipCorpus);
   }
 
   if (chart) chart.destroy();
 
   const ctx = document.getElementById("growthChart").getContext("2d");
+
   chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: labels,
       datasets: [
         {
-          label: "Lumpsum Investment Growth",
+          label: "Lumpsum Investment",
           data: lumpData,
-          borderColor: '#1e3c72',
-          backgroundColor: 'rgba(30, 60, 114, 0.1)',
+          borderColor: "#1e3c72",
           borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 4,
-          pointHoverRadius: 7,
-          pointBackgroundColor: '#1e3c72'
+          fill: false
         },
         {
-          label: "SIP Investment Growth",
+          label: "SIP Investment",
           data: sipData,
-          borderColor: '#2a5298',
-          backgroundColor: 'rgba(42, 82, 152, 0.1)',
+          borderColor: "#2a5298",
           borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 4,
-          pointHoverRadius: 7,
-          pointBackgroundColor: '#2a5298'
+          fill: false
         },
         {
-          label: "Total Portfolio Value",
+          label: "Total Portfolio",
           data: totalData,
-          borderColor: '#4CAF50',
-          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+          borderColor: "#4CAF50",
           borderWidth: 4,
-          tension: 0.4,
-          fill: true,
-          pointRadius: 5,
-          pointHoverRadius: 8,
-          pointBackgroundColor: '#4CAF50'
+          fill: false
         }
       ]
     },
     options: {
-  responsive: true,
-  maintainAspectRatio: false,   // ⭐ THIS FIXES MOBILE
-  interaction: {
-    mode: 'index',
-    intersect: false
-  },
-  plugins: {
-    legend: {
-      position: "bottom"
-    }
-  },
-  scales: {
-    y: {
-      beginAtZero: true
-    }
-  }
-},
-
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
+      plugins: {
+        legend: {
+          position: "bottom"
+        },
         tooltip: {
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          padding: 15,
-          titleFont: {
-            size: 15,
-            weight: 'bold'
-          },
-          bodyFont: {
-            size: 14
-          },
           callbacks: {
-            label: function(context) {
-              let label = context.dataset.label || '';
-              if (label) {
-                label += ': ₹';
-              }
-              label += context.parsed.y.toLocaleString('en-IN', {maximumFractionDigits: 0});
-              return label;
+            label: function (context) {
+              return context.dataset.label + ": ₹" +
+                context.parsed.y.toLocaleString('en-IN', { maximumFractionDigits: 0 });
             }
           }
         }
       },
       scales: {
         y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function(value) {
-              if (value >= 10000000) {
-                return '₹' + (value / 10000000).toFixed(1) + ' Cr';
-              } else if (value >= 100000) {
-                return '₹' + (value / 100000).toFixed(1) + ' L';
-              }
-              return '₹' + (value / 1000).toFixed(0) + 'K';
-            },
-            font: {
-              size: 12
-            }
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          }
-        },
-        x: {
-          ticks: {
-            font: {
-              size: 12
-            }
-          },
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          }
+          beginAtZero: true
         }
       }
     }
@@ -683,22 +622,20 @@ function calculateTotal() {
 
   document.getElementById("chartContainer").classList.add("show");
 
-setTimeout(() => {
-  if (chart) {
+  setTimeout(() => {
     chart.resize();
-  }
-
-  document.getElementById("chartContainer").scrollIntoView({
-    behavior: 'smooth',
-    block: 'nearest'
-  });
-}, 400);
-
+    document.getElementById("chartContainer").scrollIntoView({
+      behavior: "smooth",
+      block: "nearest"
+    });
+  }, 400);
 }
 </script>
+
 
 </body>
 
 </html>
+
 
 
