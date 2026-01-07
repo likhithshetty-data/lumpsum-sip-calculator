@@ -314,8 +314,20 @@
       padding: 20px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       width: 100% ;
-      height: 300px ;
+      
     }
+    .chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 420px;
+}
+
+@media (max-width: 600px) {
+  .chart-wrapper {
+    height: 320px;
+  }
+}
+
 
     footer {
       text-align: center;
@@ -470,7 +482,10 @@
 
   <div class="chart-container" id="chartContainer">
     <h2>📈 Investment Growth Projection</h2>
-    <canvas id="growthChart"></canvas>
+    <div class="chart-wrapper">
+  <canvas id="growthChart"></canvas>
+ </div>
+
   </div>
 </div>
 
@@ -592,19 +607,24 @@ function calculateTotal() {
       ]
     },
     options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: {
-            padding: 20,
-            font: {
-              size: 13,
-              weight: 'bold'
-            },
-            usePointStyle: true
-          }
-        },
+  responsive: true,
+  maintainAspectRatio: false,   // ⭐ THIS FIXES MOBILE
+  interaction: {
+    mode: 'index',
+    intersect: false
+  },
+  plugins: {
+    legend: {
+      position: "bottom"
+    }
+  },
+  scales: {
+    y: {
+      beginAtZero: true
+    }
+  }
+},
+
         tooltip: {
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
           padding: 15,
@@ -680,4 +700,5 @@ setTimeout(() => {
 </body>
 
 </html>
+
 
