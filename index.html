@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>SIP & Lumpsum Calculator - Finance in Tulu (FIT) | Investment Planning Tool</title>
+  <title>Lumpsum + SIP Calculator | Calculate Returns When You Invest Both</title>
   <meta name="description" content="Calculate your investment returns with our SIP and Lumpsum calculator. Understand compound interest, wealth creation, and plan your financial future with Finance in Tulu (FIT).">
   <meta name="keywords" content="SIP calculator, lumpsum calculator, investment calculator, mutual fund calculator, compound interest, wealth creation, financial planning, FIT, Finance in Tulu">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +27,7 @@
       overflow-x: hidden;
     }
 
+    /* Animated background pattern */
     body::before {
       content: '';
       position: fixed;
@@ -45,9 +46,32 @@
       opacity: 0.5;
     }
 
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Logo and Header */
     .header {
       text-align: center;
       margin-bottom: 30px;
+      animation: slideIn 0.6s ease-out;
       position: relative;
       z-index: 1;
     }
@@ -67,6 +91,7 @@
       background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      background-clip: text;
       letter-spacing: 3px;
     }
 
@@ -74,25 +99,40 @@
       color: white;
       font-size: 16px;
       font-weight: 500;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      margin-top: 5px;
     }
 
     .container {
       max-width: 1200px;
       background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
       margin: 0 auto 40px;
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       position: relative;
       z-index: 1;
+      animation: slideIn 0.8s ease-out;
     }
 
     h1 {
       text-align: center;
       color: #1e3c72;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
       font-size: 32px;
       font-weight: 700;
+    }
+
+    .intro-text {
+      text-align: center;
+      color: #555;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .main-layout {
@@ -101,10 +141,54 @@
       gap: 40px;
     }
 
-    @media (max-width: 968px) {
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
+    .calculator-section {
+      animation: slideIn 0.8s ease-out;
+    }
+
+    .info-section {
+      animation: slideIn 1s ease-out;
+    }
+
+    h2 {
+      color: #1e3c72;
+      font-size: 20px;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #2a5298;
+      padding-bottom: 10px;
+    }
+
+    .info-box {
+      background: #f8f9fa;
+      border-left: 4px solid #2a5298;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .info-box h3 {
+      color: #1e3c72;
+      font-size: 16px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .info-box p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .info-box ul {
+      margin-left: 20px;
+      color: #555;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
     }
 
     label {
@@ -113,40 +197,162 @@
       margin-bottom: 8px;
       color: #2c3e50;
       font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
     }
 
     input {
       width: 100%;
-      padding: 14px;
+      padding: 14px 16px;
       font-size: 16px;
-      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 2px solid #d1d5db;
+      background: white;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2a5298;
+      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      transform: translateY(-2px);
+    }
+
+    input::placeholder {
+      color: #9ca3af;
     }
 
     button {
       width: 100%;
+      margin-top: 30px;
       padding: 16px;
-      background: #1e3c72;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
       color: #fff;
       border: none;
       font-size: 18px;
+      font-weight: 600;
       cursor: pointer;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(30, 60, 114, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(30, 60, 114, 0.6);
+    }
+
+    button:active {
+      transform: translateY(-1px);
     }
 
     .result {
-      margin-top: 20px;
-      padding: 15px;
-      font-size: 22px;
+      margin-top: 30px;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
       text-align: center;
       color: #1e3c72;
-      background: #e3f2fd;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border: 2px solid #2a5298;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.4s ease;
+    }
+
+    .result.show {
+      opacity: 1;
+      transform: scale(1);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .breakup {
+      text-align: center;
+      margin-top: 15px;
+      padding: 15px;
+      font-size: 14px;
+      color: #2c3e50;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      opacity: 0;
+      transition: all 0.4s ease 0.2s;
+    }
+
+    .breakup.show {
+      opacity: 1;
+    }
+
+    .breakup-item {
+      display: inline-block;
+      margin: 5px 10px;
+      font-weight: 600;
     }
 
     .chart-container {
-      margin-top: 30px;
+      margin-top: 40px;
+      opacity: 0;
+      transition: all 0.5s ease 0.3s;
+    }
+
+    .chart-container.show {
+      opacity: 1;
     }
 
     canvas {
-      width: 100%;
+      border-radius: 12px;
+      background: white;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 14px;
+      margin: 30px 0;
+      position: relative;
+      z-index: 1;
+      font-weight: 500;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 968px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .container {
+        padding: 25px;
+      }
+
+      .logo {
+        font-size: 36px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .logo-container {
+        padding: 15px 30px;
+      }
+
+      .result {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
@@ -161,32 +367,115 @@
 </div>
 
 <div class="container">
-  <h1>SIP & Lumpsum Investment Calculator</h1>
+  <h1>Lumpsum + SIP Calculator</h1>
+  
+  <p class="intro-text">
+    This Lumpsum + SIP calculator helps you calculate investment returns when you invest
+    a one-time lumpsum amount first and then continue monthly SIP investments.
+    It shows how your combined investment grows year by year using compound interest.
+  </p>
 
   <div class="main-layout">
-    <div>
-      <label>Initial Lumpsum Amount (₹)</label>
-      <input type="number" id="lumpAmount">
+    <div class="calculator-section">
+      <h2>📊 Calculate Your Investment</h2>
 
-      <label>Monthly SIP Amount (₹)</label>
-      <input type="number" id="sipAmount">
+      <div class="input-group">
+        <label>Initial Lumpsum Amount (₹)</label>
+        <div class="input-wrapper">
+          <input type="number" id="lumpAmount" placeholder="100000">
+        </div>
+      </div>
 
-      <label>Expected Annual Return (%)</label>
-      <input type="number" id="rate">
+      <div class="input-group">
+        <label>Monthly SIP Amount (₹)</label>
+        <div class="input-wrapper">
+          <input type="number" id="sipAmount" placeholder="5000">
+        </div>
+      </div>
 
-      <label>Investment Duration (Years)</label>
-      <input type="number" id="years">
+      <div class="input-group">
+        <label>Expected Annual Return (%)</label>
+        <div class="input-wrapper">
+          <input type="number" id="rate" placeholder="12">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Investment Duration (Years)</label>
+        <div class="input-wrapper">
+          <input type="number" id="years" placeholder="15">
+        </div>
+      </div>
 
       <button onclick="calculateTotal()">Calculate Investment Returns</button>
 
       <div class="result" id="totalResult"></div>
+      <div class="breakup" id="breakupResult"></div>
     </div>
 
-    <div class="chart-container">
-      <canvas id="growthChart"></canvas>
+    <div class="info-section">
+      <h2>💡 Understanding Your Investment</h2>
+
+      <div class="info-box">
+        <h3>What is SIP (Systematic Investment Plan)?</h3>
+        <p>SIP is a disciplined investment approach where you invest a fixed amount regularly (monthly/quarterly) in mutual funds. It's like a recurring deposit but with market-linked returns.</p>
+        <p><strong>Key Benefits:</strong></p>
+        <ul>
+          <li>Rupee cost averaging reduces market timing risk</li>
+          <li>Power of compounding multiplies your wealth</li>
+          <li>Disciplined and affordable investing</li>
+          <li>Flexibility to start with small amounts</li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <h3>What is Lumpsum Investment?</h3>
+        <p>Lumpsum investment means investing a large amount of money at once in mutual funds or other investment vehicles. Ideal when you have surplus funds like bonus, inheritance, or savings.</p>
+        <p><strong>When to Choose Lumpsum:</strong></p>
+        <ul>
+          <li>You have a significant amount to invest</li>
+          <li>Market conditions are favorable</li>
+          <li>Long-term investment horizon (5+ years)</li>
+          <li>Maximize returns during market dips</li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <h3>How Does Money Multiply?</h3>
+        <p>Your money grows through <strong>compound interest</strong> - earning returns on your initial investment plus accumulated returns. The formula: A = P(1 + r/n)^(nt)</p>
+        <p><strong>Example:</strong> ₹1,00,000 invested at 12% annual return becomes:</p>
+        <ul>
+          <li>5 years: ₹1,76,234 (76% growth)</li>
+          <li>10 years: ₹3,10,585 (210% growth)</li>
+          <li>15 years: ₹5,47,357 (447% growth)</li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <h3>How to Use This Calculator</h3>
+        <p>This investment calculator helps you plan your financial future by showing potential returns from SIP and lumpsum investments combined.</p>
+        <p><strong>Steps:</strong></p>
+        <ul>
+          <li>Enter your one-time lumpsum amount</li>
+          <li>Add monthly SIP contribution</li>
+          <li>Set realistic return expectations (8-15% for equity)</li>
+          <li>Choose investment timeframe</li>
+          <li>View projected wealth accumulation with visual charts</li>
+        </ul>
+      </div>
     </div>
   </div>
+
+  <div class="chart-container" id="chartContainer">
+    <h2>📈 Investment Growth Projection</h2>
+    <canvas id="growthChart"></canvas>
+  </div>
 </div>
+
+<footer>
+  © 2024 Finance in Tulu (FIT) | SIP Calculator | Lumpsum Calculator | Investment Planning Tool<br>
+  Empowering Smart Investment Decisions Through Compound Interest & Wealth Creation
+</footer>
 
 <script>
 let chart;
@@ -197,8 +486,38 @@ function calculateTotal() {
   let rate = Number(document.getElementById("rate").value) / 100;
   let years = Number(document.getElementById("years").value);
 
-  let monthlyRate = rate / 12;
+  if (lump <= 0 || sip <= 0 || rate <= 0 || years <= 0) {
+    document.getElementById("totalResult").innerHTML = "⚠️ Please enter valid positive values";
+    document.getElementById("totalResult").classList.add("show");
+    document.getElementById("breakupResult").classList.remove("show");
+    document.getElementById("chartContainer").classList.remove("show");
+    return;
+  }
 
+  let monthlyRate = rate / 12;
+  let totalMonths = years * 12;
+
+  /* -------- FINAL VALUES -------- */
+  let lumpFV = lump * Math.pow(1 + rate, years);
+
+  let sipFV = sip * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+
+  let totalFV = lumpFV + sipFV;
+  let totalInvested = lump + (sip * totalMonths);
+  let totalGains = totalFV - totalInvested;
+
+  document.getElementById("totalResult").innerHTML =
+    "💰 Total Future Value: ₹" + totalFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) +
+    "<br><small style='font-size:16px; font-weight:normal;'>Total Invested: ₹" + totalInvested.toLocaleString('en-IN') + 
+    " | Wealth Gained: ₹" + totalGains.toLocaleString('en-IN', {maximumFractionDigits: 0}) + "</small>";
+  document.getElementById("totalResult").classList.add("show");
+
+  document.getElementById("breakupResult").innerHTML =
+    '<div class="breakup-item">🏦 Lumpsum Growth: ₹' + lumpFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) + 
+    '</div><div class="breakup-item">📈 SIP Growth: ₹' + sipFV.toLocaleString('en-IN', {maximumFractionDigits: 0}) + '</div>';
+  document.getElementById("breakupResult").classList.add("show");
+
+  /* -------- CORRECT & EFFICIENT CHART DATA -------- */
   let labels = [];
   let lumpData = [];
   let sipData = [];
@@ -209,30 +528,143 @@ function calculateTotal() {
   for (let year = 1; year <= years; year++) {
     labels.push("Year " + year);
 
+    // Lumpsum value
     let lumpValue = lump * Math.pow(1 + rate, year);
     lumpData.push(lumpValue);
 
+    // SIP accumulation (year-wise, realistic)
     for (let m = 1; m <= 12; m++) {
       sipCorpus = (sipCorpus + sip) * (1 + monthlyRate);
     }
 
     sipData.push(sipCorpus);
+
+    // Total value
     totalData.push(lumpValue + sipCorpus);
   }
 
   if (chart) chart.destroy();
 
-  chart = new Chart(document.getElementById("growthChart"), {
+  const ctx = document.getElementById("growthChart").getContext("2d");
+  chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels,
+      labels: labels,
       datasets: [
-        { label: "Lumpsum", data: lumpData, borderColor: "#1e3c72", fill: false },
-        { label: "SIP", data: sipData, borderColor: "#2a5298", fill: false },
-        { label: "Total", data: totalData, borderColor: "#4CAF50", fill: false }
+        {
+          label: "Lumpsum Investment Growth",
+          data: lumpData,
+          borderColor: '#1e3c72',
+          backgroundColor: 'rgba(30, 60, 114, 0.1)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#1e3c72'
+        },
+        {
+          label: "SIP Investment Growth",
+          data: sipData,
+          borderColor: '#2a5298',
+          backgroundColor: 'rgba(42, 82, 152, 0.1)',
+          borderWidth: 3,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#2a5298'
+        },
+        {
+          label: "Total Portfolio Value",
+          data: totalData,
+          borderColor: '#4CAF50',
+          backgroundColor: 'rgba(76, 175, 80, 0.1)',
+          borderWidth: 4,
+          tension: 0.4,
+          fill: true,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          pointBackgroundColor: '#4CAF50'
+        }
       ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            padding: 20,
+            font: {
+              size: 13,
+              weight: 'bold'
+            },
+            usePointStyle: true
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          padding: 15,
+          titleFont: {
+            size: 15,
+            weight: 'bold'
+          },
+          bodyFont: {
+            size: 14
+          },
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (label) {
+                label += ': ₹';
+              }
+              label += context.parsed.y.toLocaleString('en-IN', {maximumFractionDigits: 0});
+              return label;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              if (value >= 10000000) {
+                return '₹' + (value / 10000000).toFixed(1) + ' Cr';
+              } else if (value >= 100000) {
+                return '₹' + (value / 100000).toFixed(1) + ' L';
+              }
+              return '₹' + (value / 1000).toFixed(0) + 'K';
+            },
+            font: {
+              size: 12
+            }
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)'
+          }
+        },
+        x: {
+          ticks: {
+            font: {
+              size: 12
+            }
+          },
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)'
+          }
+        }
+      }
     }
   });
+
+  document.getElementById("chartContainer").classList.add("show");
+  
+  // Smooth scroll to chart
+  setTimeout(() => {
+    document.getElementById("chartContainer").scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 400);
 }
 </script>
 
